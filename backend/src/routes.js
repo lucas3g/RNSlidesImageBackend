@@ -28,12 +28,29 @@ routes.post('/posts', multer(multerConfig).single('file'), async (req, res) => {
   return res.json(post);
 });
 
+routes.put('/posts/:id', async (req, res) => {
+  const { originalname: name, size, key, location: url = '' } = req.file;
+  const { title, subt, titledesc, desc } = req.body;
+  const post = await Post.findById(req.params.id);
+  await post.updateOne({
+    name,
+    size,
+    key,
+    url,
+    title,
+    subt,
+    titledesc,
+    desc
+  });
+  return res.json(post);
+});
+
 routes.delete('/posts/:id', async (req, res) => {
   const post = await Post.findById(req.params.id);
 
   await post.remove();
 
   return res.send();
-})
+});
 
 module.exports = routes;
