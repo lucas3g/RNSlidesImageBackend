@@ -8,7 +8,7 @@ routes.get('/posts', async (req, res) => {
   const { q: pesquisa } = req.query;
 
   const posts = pesquisa
-      ? await Post.find({"title": new Regex(pesquisa)})
+      ? await Post.find({"title": new RegExp(pesquisa)})
       : await Post.find();
 
   return res.json(posts);
